@@ -1,6 +1,7 @@
 # --- Terraform core files ---
 # Local .terraform directories (plugins, modules, etc.)
 **/.terraform/*
+.terraform/
 
 # Local state files
 *.tfstate
