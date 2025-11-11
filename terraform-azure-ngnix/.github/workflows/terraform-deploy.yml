@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [ "main" ]
   # run once a day to keep infra in sync
-  schedule:
-    - cron: "0 3 * * *"
+  #schedule:
+  #  - cron: "0 3 * * *"
 
 permissions:
   id-token: write
@@ -44,7 +44,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.6.0
+          terraform_version: 1.5.7
 
       ########################################################
       # 4) (Optional but recommended)
