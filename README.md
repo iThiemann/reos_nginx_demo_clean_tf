@@ -1,10 +1,10 @@
-# reos_nginx_demo_clean_tf
-
+# How to use
+```
 cd terraform-azure-nginx  
 terraform init  
 terraform plan  
 terraform apply  
-
+```
 
 # Optimized Folder Structure for TF 
 ```
