@@ -90,7 +90,8 @@ on PR → runs terraform plan only (so you can see what would change)
 on schedule → re-applies once a day, good for “greenfield but evolving” setups  
 uses your repo root → so it picks up:  
 main.tf (resource group + modules)  
-modules/network / modules/compute  
+modules/network  
+modules/compute  
 files/cloud-init.yaml  
 
 Required GitHub secrets:  
