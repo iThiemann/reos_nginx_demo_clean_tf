@@ -1,0 +1,90 @@
+name: Terraform deploy to Azure
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # run once a day to keep infra in sync
+  schedule:
+    - cron: "0 3 * * *"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      # our terraform code is at repo root
+      WORKING_DIRECTORY: .
+    steps:
+      ########################################################
+      # 1) Checkout repo
+      ########################################################
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      ########################################################
+      # 2) Azure login via OIDC
+      #    requires 3 GitHub secrets:
+      #    AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
+      ########################################################
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      ########################################################
+      # 3) Setup Terraform (same version as in providers.tf)
+      ########################################################
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      ########################################################
+      # 4) (Optional but recommended)
+      #    Create terraform.tfvars so our VM gets an SSH key.
+      #    Put your public key in GitHub secret TF_SSH_PUBLIC_KEY
+      ########################################################
+      - name: Create terraform.tfvars
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          cat > terraform.tfvars <<EOF
+          ssh_public_key = "${{ secrets.TF_SSH_PUBLIC_KEY }}"
+          EOF
+
+      ########################################################
+      # 5) Terraform init
+      ########################################################
+      - name: Terraform Init
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: terraform init
+
+      ########################################################
+      # 6) Terraform validate
+      ########################################################
+      - name: Terraform Validate
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: terraform validate
+
+      ########################################################
+      # 7) Terraform plan on PRs
+      ########################################################
+      - name: Terraform Plan
+        if: github.event_name == 'pull_request'
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: terraform plan -no-color
+
+      ########################################################
+      # 8) Terraform apply on main (push + schedule)
+      ########################################################
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: terraform apply -auto-approve
+
