@@ -65,11 +65,11 @@ files/
 YAML or bash scripts sitting inside your .tf files
 
 Externalizing:   
-Readability: YAML indentation and color-coding stay intact.  
-Versioning: Git diffs show changes in configuration scripts clearly.  
-Maintainability: You can test or run the file outside Terraform.  
-Security: Sensitive or lengthy bootstrap data can be separated, or even encrypted.i  
-Terraform loads it via file("files/cloud-init.yaml"), keeping your .tf logic clean.  
+- Readability: YAML indentation and color-coding stay intact.  
+- Versioning: Git diffs show changes in configuration scripts clearly.  
+- Maintainability: You can test or run the file outside Terraform.  
+- Security: Sensitive or lengthy bootstrap data can be separated, or even encrypted.i  
+- Terraform loads it via file("files/cloud-init.yaml"), keeping your .tf logic clean.  
 
 # Separation for a Clean Workflow
 
@@ -85,18 +85,18 @@ Terraform loads it via file("files/cloud-init.yaml"), keeping your .tf logic cle
 # GitHub Actions Pipeline 
 
 .github/workflows/terraform-deply.yml  
-on push to main → deploys your latest Terraform (new VM, updated NSG, etc.)  
-on PR → runs terraform plan only (so you can see what would change)  
-on schedule → re-applies once a day, good for “greenfield but evolving” setups  
+- on push to main → deploys your latest Terraform (new VM, updated NSG, etc.)  
+- on PR → runs terraform plan only (so you can see what would change)  
+- on schedule → re-applies once a day, good for “greenfield but evolving” setups  
 uses your repo root → so it picks up:  
-main.tf (resource group + modules)  
-modules/network  
-modules/compute  
-files/cloud-init.yaml  
+- main.tf (resource group + modules)  
+- modules/network  
+- modules/compute  
+- files/cloud-init.yaml  
 
 Required GitHub secrets:  
 Set these in Repo → Settings → Secrets and variables → Actions:  
-AZURE_CLIENT_ID  
-AZURE_TENANT_ID  
-AZURE_SUBSCRIPTION_ID  
-TF_SSH_PUBLIC_KEY → put your public key here, e.g. contents of ~/.ssh/id_rsa.pub   
+- AZURE_CLIENT_ID  
+- AZURE_TENANT_ID  
+- AZURE_SUBSCRIPTION_ID  
+- TF_SSH_PUBLIC_KEY → put your public key here, e.g. contents of ~/.ssh/id_rsa.pub   
