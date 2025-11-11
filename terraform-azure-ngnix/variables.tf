@@ -1,35 +1,62 @@
 ############################################################
-# Root-level variables
+# variables.tf
 ############################################################
 
-variable "project_name" {
-  description = "Short name prefix for Azure resources"
+# --- Azure auth ---
+variable "azure_subscription_id" {
+  description = "Azure subscription ID"
   type        = string
-  default     = "nginx-demo"
 }
 
+variable "azure_client_id" {
+  description = "Azure AD application (client) ID"
+  type        = string
+}
+
+variable "azure_client_secret" {
+  description = "Azure AD application client secret"
+  type        = string
+  sensitive   = true
+}
+
+variable "azure_tenant_id" {
+  description = "Azure AD tenant ID"
+  type        = string
+}
+
+# --- General ---
 variable "location" {
   description = "Azure region to deploy to"
   type        = string
   default     = "westeurope"
 }
 
-variable "resource_group_name" {
-  description = "Name of the resource group to create"
+variable "environment" {
+  description = "Environment name: dev, staging, prod"
   type        = string
-  default     = "rg-nginx-demo"
+  default     = "dev"
+}
+
+variable "project_name" {
+  description = "Base name/prefix for resources"
+  type        = string
+  default     = "taohc-nginx"
 }
 
 variable "admin_username" {
-  description = "Linux admin username for the VM"
+  description = "Admin username for Linux VMs"
   type        = string
   default     = "azureuser"
 }
 
 variable "ssh_public_key" {
-  description = "Path to your SSH public key (e.g. ~/.ssh/id_rsa.pub) or the key string"
+  description = "Public SSH key content (not path)"
   type        = string
-  # you can change this to the actual key string if you prefer
-  default     = "~/.ssh/id_rsa.pub"
 }
 
+# storage-specific
+variable "storage_account_sku" {
+  description = "Storage account SKU"
+  type        = string
+  default     = "Standard_LRS"
+}

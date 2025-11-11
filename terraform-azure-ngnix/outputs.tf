@@ -1,5 +1,5 @@
 ############################################################
-# Output public IP / URL to access nginx
+# outputs.tf
 ############################################################
 
 output "public_ip_address" {
@@ -8,7 +8,14 @@ output "public_ip_address" {
 }
 
 output "nginx_url" {
-  description = "URL to reach the nginx hello page"
+  description = "URL to access nginx"
   value       = "http://${module.compute.public_ip_address}"
 }
 
+output "storage_account_name" {
+  value = module.storage.storage_account_name
+}
+
+output "log_analytics_workspace_id" {
+  value = module.monitoring.workspace_id
+}

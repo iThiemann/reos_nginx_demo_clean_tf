@@ -8,16 +8,21 @@
 
 # Public IP so we can reach nginx
 resource "azurerm_public_ip" "pip" {
-  name                = "${var.project_name}-pip"
+  name                = "${var.project_name}-$(var.environment)-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  tags = {
+    environment = var.environment
+    project     = var.project_name
+  }
 }
 
 # NIC for the VM
 resource "azurerm_network_interface" "nic" {
-  name                = "${var.project_name}-nic"
+  name                = "${var.project_name}-$(var.environment)-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -27,11 +32,16 @@ resource "azurerm_network_interface" "nic" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.pip.id
   }
+
+  tags = {
+    environment = var.environment
+    project     = var.project_name
+  }
 }
 
 # Linux VM
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                = "${var.project_name}-vm"
+  name                = "${var.project_name}-$(var.environment)-vm"
   location            = var.location
   resource_group_name = var.resource_group_name
   size                = "Standard_B1s"  # small & cheap
@@ -56,7 +66,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     public_key = var.ssh_public_key
   }
 
-  computer_name                   = "${var.project_name}-vm"
+  computer_name                   = "${var.project_name}-$(var.environment)-vm"
   disable_password_authentication = true
 
   # Pass cloud-init from root (must be base64)
@@ -65,16 +75,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    name                 = "${var.project_name}-osdisk"
+    name                 = "${var.project_name}-$(var.environment)-osdisk"
+  }
+
+  tags = {
+    environment = var.environment
+    project     = var.project_name
   }
 }
-
-# Outputs
-output "public_ip_address" {
-  value = azurerm_public_ip.pip.ip_address
-}
-
-output "vm_id" {
-  value = azurerm_linux_virtual_machine.vm.id
-}
-

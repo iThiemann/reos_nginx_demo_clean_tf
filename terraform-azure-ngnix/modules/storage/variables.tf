@@ -1,5 +1,5 @@
 ############################################################
-# modules/compute/variables.tf
+# modules/storage/variables.tf
 ############################################################
 
 variable "resource_group_name" {
@@ -18,23 +18,15 @@ variable "environment" {
   type = string
 }
 
-variable "admin_username" {
-  type = string
-}
-
-variable "ssh_public_key" {
-  description = "Either a path to a public key or the key itself"
+# Let caller decide replication (LRS/ZRS/etc.)
+variable "account_tier" {
   type        = string
+  default     = "Standard"
+  description = "Storage account tier (Standard/Premium)"
 }
 
-variable "subnet_id" {
-  description = "Subnet ID from the network module"
+variable "account_replication_type" {
   type        = string
+  default     = "LRS"
+  description = "Replication type (LRS, GRS, RAGRS, ZRS, GZRS, RAGZRS)"
 }
-
-variable "cloud_init_data" {
-  description = "Full cloud-init yaml content"
-  type        = string
-}
-
-#

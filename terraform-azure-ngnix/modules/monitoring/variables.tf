@@ -1,5 +1,5 @@
 ############################################################
-# modules/network/variables.tf
+# modules/compute/variables.tf
 ############################################################
 
 variable "resource_group_name" {
@@ -16,4 +16,10 @@ variable "project_name" {
 
 variable "environment" {
   type = string
+}
+
+variable "workspace_sku" {
+  description = "Billing SKU for the Log Analytics Workspace Free, Standalone, CapacityReservation, PerGB2018"
+  type        = string
+  default     = "PerGB2018"
 }
