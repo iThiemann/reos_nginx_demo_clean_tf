@@ -21,7 +21,7 @@ terraform-azure-nginx/
     │   └── main.tf
     └── compute
         └── main.tf
-
+```
 # Top-Level Calrirty (Root Module)
 
 terraform-azure-nginx/
