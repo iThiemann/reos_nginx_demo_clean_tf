@@ -64,12 +64,12 @@ files/
 ```
 YAML or bash scripts sitting inside your .tf files
 
-Externalizing: 
-Readability: YAML indentation and color-coding stay intact.
-Versioning: Git diffs show changes in configuration scripts clearly.
-Maintainability: You can test or run the file outside Terraform.
-Security: Sensitive or lengthy bootstrap data can be separated, or even encrypted.
-Terraform loads it via file("files/cloud-init.yaml"), keeping your .tf logic clean.
+Externalizing:   
+Readability: YAML indentation and color-coding stay intact.  
+Versioning: Git diffs show changes in configuration scripts clearly.  
+Maintainability: You can test or run the file outside Terraform.  
+Security: Sensitive or lengthy bootstrap data can be separated, or even encrypted.i  
+Terraform loads it via file("files/cloud-init.yaml"), keeping your .tf logic clean.  
 
 # Separation for a Clean Workflow
 
