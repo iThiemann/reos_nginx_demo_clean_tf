@@ -7,18 +7,6 @@
 # - NSG association to subnet
 ############################################################
 
-variable "resource_group_name" {
-  type = string
-}
-
-variable "location" {
-  type = string
-}
-
-variable "project_name" {
-  type = string
-}
-
 # VNet
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.project_name}-vnet"
