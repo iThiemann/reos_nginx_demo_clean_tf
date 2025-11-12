@@ -1,14 +1,19 @@
-############################################################
-# Output public IP / URL to access nginx
-############################################################
+###############################################################################
+# Root: outputs.tf
+# - Convenience values useful at the end of `terraform apply`.
+###############################################################################
 
-output "public_ip_address" {
-  description = "Public IP of the nginx VM"
-  value       = module.compute.public_ip_address
+output "resource_group_name" {
+  value       = module.rg.name
+  description = "Name of the created Resource Group."
 }
 
-output "nginx_url" {
-  description = "URL to reach the nginx hello page"
-  value       = "http://${module.compute.public_ip_address}"
+output "nginx_fqdn" {
+  value       = module.nginx.fqdn
+  description = "Public FQDN of the nginx container."
 }
 
+output "nginx_ip_address" {
+  value       = module.nginx.ip_address
+  description = "Public IP address assigned to the container group."
+}

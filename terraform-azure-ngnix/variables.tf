@@ -3,7 +3,7 @@
 ############################################################
 
 variable "project_name" {
-  description = "Short name prefix for Azure resources"
+  description = "Logical name/prefix for all Azure resources"
   type        = string
   default     = "nginx-demo"
 }
@@ -20,16 +20,37 @@ variable "resource_group_name" {
   default     = "rg-nginx-demo"
 }
 
-variable "admin_username" {
-  description = "Linux admin username for the VM"
+variable "dns_name_label" {
+  description = "DNS name label for the container group public IP (must be unique within the Azure region)"
   type        = string
-  default     = "azureuser"
+  default     = "nginx-demo-aci-reos-demo"
 }
 
-variable "ssh_public_key" {
-  description = "Path to your SSH public key (e.g. ~/.ssh/id_rsa.pub) or the key string"
+variable "stage" {
+  description = "Deployment stage indicator (dev|staging|prod)."
   type        = string
-  # you can change this to the actual key string if you prefer
-  default     = "~/.ssh/id_rsa.pub"
 }
 
+variable "container_image" {
+  description = "Container image to run"
+  type        = string
+  default     = "nginx:latest"
+}
+
+variable "container_cpu" {
+  description = "CPU for the container"
+  type        = number
+  default     = 1
+}
+
+variable "container_memory" {
+  description = "Memory (GB) for the container"
+  type        = number
+  default     = 1.5
+}
+
+variable "container_env_vars" {
+  description = "Environment variables to inject into the container (stage-specific)"
+  type        = map(string)
+  default     = {}
+}
