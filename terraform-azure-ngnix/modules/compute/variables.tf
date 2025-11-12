@@ -36,5 +36,3 @@ variable "cloud_init_data" {
   description = "Full cloud-init yaml content"
   type        = string
 }
-
-#

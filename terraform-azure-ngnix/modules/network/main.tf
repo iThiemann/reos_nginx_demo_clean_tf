@@ -10,7 +10,12 @@
 # vnet_address_space and subnet_prefixes can be exposed as variables 
 locals {
   vnet_address_space = ["10.0.0.0/16"]
-  subnet_prefixes     = ["10.0.1.0/24"]
+
+  # workload subnet (VMs)
+  workload_subnet_prefix = ["10.0.1.0/24"]
+
+  # dedicated subnet for Application Gateway (must be separate)
+  appgw_subnet_prefix = ["10.0.2.0/24"]
 }
 
 # VNet
@@ -26,12 +31,20 @@ resource "azurerm_virtual_network" "vnet" {
   }
 }
 
-# Subnet
+# Workload subnet
 resource "azurerm_subnet" "subnet" {
   name                 = "${var.project_name}-$(var.environment)-subnet"
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = local.subnet_prefixes
+  address_prefixes     = local.workload_subnet_prefix
+}
+
+# App Gateway subnet
+resource "azurerm_subnet" "appgw_subnet" {
+  name                 = "${var.project_name}-${var.environment}-appgw-subnet"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = local.appgw_subnet_prefix
 }
 
 # NSG to allow SSH (22) and HTTP (80)

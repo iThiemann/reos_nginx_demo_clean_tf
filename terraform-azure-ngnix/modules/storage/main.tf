@@ -21,9 +21,6 @@ resource "azurerm_storage_account" "sa" {
   account_tier             = var.account_tier
   account_replication_type = var.account_replication_type
 
-  # recommended
-  allow_blob_public_access = false
-
   tags = {
     environment = var.environment
     project     = var.project_name
