@@ -31,7 +31,9 @@ module "storage" {
   location            = azurerm_resource_group.rg.location
   project_name        = var.project_name
   environment         = var.environment
-  account_sku         = var.storage_account_sku
+  
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
 }
 
 # 5. Monitoring module (Log Analytics, future diag)
